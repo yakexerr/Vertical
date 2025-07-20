@@ -1,0 +1,34 @@
+services:
+  # Сервис для базы данных PostgreSQL
+  db:
+    image: postgres:14-alpine  # Используем официальный, легковесный образ Postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/ # Сохраняем данные БД между перезапусками
+    environment:
+      # Эти переменные используются Postgres для создания БД и пользователя при первом запуске
+      - POSTGRES_USER=vertical_user
+      - POSTGRES_PASSWORD=vertical_password
+      - POSTGRES_DB=vertical_db
+    ports:
+      - "5433:5432" # Пробрасываем порт, чтобы можно было подключиться к БД с компьютера
+
+  # Сервис для нашего Django-приложения
+  web:
+    build: .  # Инструкция собрать образ из текущей директории (используя Dockerfile)
+    command: python manage.py runserver 0.0.0.0:8000 # Команда для запуска сервера
+    volumes:
+      - .:/code # "Зеркалим" код из нашей папки в контейнер, чтобы изменения сразу применялись
+    ports:
+      - "8000:8000" # Пробрасываем порт веб-сервера
+    environment:
+      # Переменные для подключения к БД. Обратите внимание, что хост - это 'db' (имя сервиса)
+      - POSTGRES_NAME=vertical_db
+      - POSTGRES_USER=vertical_user
+      - POSTGRES_PASSWORD=vertical_password
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    depends_on:
+      - db # Указываем, что наш веб-сервис зависит от сервиса БД
+
+volumes:
+  postgres_data: # Объявляем "том" для хранения данных БД
