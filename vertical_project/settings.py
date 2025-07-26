@@ -11,12 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k!89ug8glo(h+=rat!8g+57phhc@u6q2olr4@lk%s2w)#^=5c6'
+SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env.bool('DEBUG', default=True) # 
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
-CSRD_TRUSTED_ORIGINS = env.list('CSRD_TRUSTED_ORIGINS', default=[])
+CSRF_TRUSTED_ORIGINS = env.list('CSRD_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 
@@ -109,5 +109,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-print(1/0)
