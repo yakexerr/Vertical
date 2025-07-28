@@ -9,3 +9,12 @@ class Park(models.Model):
     schedule = models.CharField(max_length=200, verbose_name="Расписание работы")
     def __str__(self):
         return f"{self.title} ({self.city})"
+
+class Entertainment(models.Model):
+    park = models.ForeignKey(Park, on_delete=models.CASCADE, verbose_name="Парк")
+    title = models.CharField(max_length=200, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание")
+    min_height = models.CharField(max_length= 50, verbose_name="Минимальный рост")
+    price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Цена")
+    def __str__(self):
+        return f"{self.title} ({self.park.title}, {self.description})"
