@@ -1,0 +1,62 @@
+# Название нашего "конвейера"
+name: Django CI
+
+# 1. Триггеры: когда запускать конвейер
+on:
+  push:
+    branches: [ "main" ] # Запускать при push в ветку main
+  pull_request:
+    branches: [ "main" ] # Запускать при создании Pull Request к ветке main
+
+# 2. Работы (Jobs): что делать
+jobs:
+  build:
+    # 3. Робот: на какой ОС запускать
+    runs-on: ubuntu-latest
+
+    # 4. Сервисы: какие фоновые контейнеры нам нужны
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # 5. Шаги: последовательность команд
+    steps:
+    - name: Checkout repository
+      # Стандартное действие, выкачивает код
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      # Стандартное действие, устанавливает Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install Dependencies
+      # Устанавливаем зависимости
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      # Запускаем тесты!
+      run: python -m pytest
+      # Передаем переменные окружения, чтобы Django мог подключиться к БД
+      env:
+        SECRET_KEY: 'a-dummy-secret-key-for-testing'
+        DEBUG: 'True'
+        POSTGRES_NAME: test_db
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_password
+        POSTGRES_HOST: localhost # <-- Робот видит сервис postgres как localhost
+        POSTGRES_PORT: 5432
