@@ -34,6 +34,20 @@ services:
       - POSTGRES_PORT=5432
     depends_on:
       - db # Указываем, что наш веб-сервис зависит от сервиса БД
+  redis:
+    image: redis:7-alpine # Используем официальный, легковесный образ Redis
+
+  # Новый сервис для Celery worker
+  celery:
+    build: .             # Используем тот же Docker-образ, что и для web
+    command: celery -A vertical_project worker --loglevel=info # Команда для запуска рабочего
+    volumes:
+      - .:/code          # "Зеркалим" код, как и для web
+    env_file:
+      - .env             # Передаем те же переменные окружения
+    depends_on:
+      - web              # Celery зависит от кода Django
+      - redis            # ... и от Redis
 
 volumes:
   postgres_data: # Объявляем "том" для хранения данных БД
