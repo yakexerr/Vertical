@@ -65,4 +65,5 @@ jobs:
         POSTGRES_HOST: localhost # <-- Робот видит сервис postgres как localhost
         POSTGRES_PORT: 5432
         CELERY_BROKER_URL: redis://localhost:6379/0
+        CELERY_RESULT_BACKEND: redis://localhost:6379/0
 
