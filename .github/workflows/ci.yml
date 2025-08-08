@@ -29,6 +29,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      redis: # <-- ДОБАВИТЬ ЭТОТ БЛОК
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
 
     # 5. Шаги: последовательность команд
     steps:
