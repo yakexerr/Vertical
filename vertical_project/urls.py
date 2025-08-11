@@ -6,6 +6,8 @@ import sys
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('park.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
 ]
 
 # для просмотра SQL-запросов при помощи django-debug-toolbar
@@ -14,3 +16,4 @@ urlpatterns = [
 #     urlpatterns = [
 #         path('__debug__/', include(debug_toolbar.urls)),
 #     ] + urlpatterns
+

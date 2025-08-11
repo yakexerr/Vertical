@@ -1,6 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from .models import Park, Entertainment
+from django.contrib.auth.models import User
 
 pytestmark = pytest.mark.django_db
 
@@ -15,7 +16,9 @@ class TestParkAPI:
         assert response.status_code == 200
 
     def test_api_create_park_without_title_fails(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         park_data = {
             'city': "Tmz",
             'address': "Pushkina",
@@ -29,7 +32,9 @@ class TestParkAPI:
         assert Park.objects.count() == 0
 
     def test_api_create_with_all_args(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         park_data = {
             'title': "Bla",
             'city': "Tmz",
@@ -72,7 +77,9 @@ class TestParkAPI:
 
 
     def test_update_park_succeeds_new_title(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         updated_data = {
             'title': "Ble",
         }
@@ -97,7 +104,9 @@ class TestParkAPI:
 
 
     def test_update_park_succeeds_new_all(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         park_data = {
         'title': "Bla",
         'city': "Tmz",
@@ -137,7 +146,9 @@ class TestParkAPI:
         "is_work": True,
         "schedule": "11:00 - 21:00"
         }
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         park = Park.objects.create(**park_data)
         url = f"/api/v1/parks/{park.id}/"
 
@@ -155,7 +166,9 @@ class TestEntertainmentAPI:
 
 
     def test_api_create_entertainment_succesed(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         test_park = Park.objects.create(title='Тестовый парк', city='Тестоград')
         entertainment_data = {
             'park': test_park.id,
@@ -170,7 +183,9 @@ class TestEntertainmentAPI:
         assert responce.data['title'] == 'Тестовое развлечение'
 
     def test_api_create_entertainments_without_title(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         entertainment_data = {
             
             'title': 'ble',
@@ -209,7 +224,9 @@ class TestEntertainmentAPI:
 
 
     def test_api_update_entertainment_succeed(self):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         test_park = Park.objects.create(title='Тестовый парк', city='Тестоград')
 
         entertainment_to_update = Entertainment.objects.create(
@@ -235,7 +252,9 @@ class TestEntertainmentAPI:
 
 
     def test_api_delete_entertainment_succeds(seld):
+        test_user = User.objects.create_user(username="testuser", password='123')
         client = APIClient()
+        client.force_authenticate(user=test_user)
         test_park = Park.objects.create(title='Тестовый парк', city='Тестоград')
 
         test_entertainment = Entertainment.objects.create(
