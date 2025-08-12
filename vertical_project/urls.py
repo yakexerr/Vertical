@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/v1/', include('park.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    path('', include('frontend.urls'))
 ]
 
 # для просмотра SQL-запросов при помощи django-debug-toolbar

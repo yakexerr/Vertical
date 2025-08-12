@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'debug_toolbar',
     'djoser',
+    'frontend',
 ]
 
 REST_FRAMEWORK = {
