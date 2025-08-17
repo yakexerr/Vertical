@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ park.title }} - Парки</title>
+    </head>
+    <body>
+
+        {% if park %}
+            <h1>{{ park.title }}</h1>
+            <p><strong>Город: </strong>{{park.city}}</p>
+            <p><strong>Адрес: </strong>{{park.address}}</p>
+            <p><strong>Расписание: </strong>{{park.schedule}}</p>
+            
+            <hr>
+            
+            <h3><strong>Описание:</strong></h3>
+            <p>{{park.description}}</p>
+
+            <h2>Развлечения в парке:</h2>
+            {% if entertainments %}
+                <ul>
+                    {% for ent in entertainments %}
+                        <li>
+                            <h4> {{ent.title}} </h4>
+                            <p>Цена: {{ent.price}} руб.</p>
+                            <p>Минимальный рост: {{ent.min_height}}</p>
+                            <p>{{ent.description}}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                
+                <p>К сожалению, нет информации для развлечений</p>
+            {% endif %}
+        {% else %}
+            <!-- А вот если ПАРК НЕ НАЙДЕН, то показываем эту ошибку -->
+            <h1>Парк не найден</h1>
+            <p>К сожалению, мы не смогли найти информацию о парке.</p>
+        {% endif %}
+        <br>
+            <a href="{% url 'frontend:park-list' %}">Назад к паркам</a>    
+    </body>
+</html>

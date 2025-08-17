@@ -1,0 +1,28 @@
+ <!DOCTYPE html>
+   <html>
+   <head>
+       <title>Веревочные парки "Вертикаль"</title>
+   </head>
+   <body>
+       <h1>Наши парки</h1>
+       
+       {% if parks %}
+           <ul>
+               {% for park in parks %}
+                   <li>
+                       <h2>
+                            <a href="{% url 'frontend:park-detail' park.id %}">{{ park.title }}</a>
+                       </h2>
+                       <p><strong>Город:</strong> {{ park.city }}</p>
+                       <p><strong>Адрес:</strong> {{ park.address }}</p>
+                       <p><em>{{ park.description }}</em></p>
+                   </li>
+                   <hr>
+               {% endfor %}
+           </ul>
+       {% else %}
+           <p>К сожалению, сейчас нет информации о доступных парках.</p>
+       {% endif %}
+
+   </body>
+   </html>
