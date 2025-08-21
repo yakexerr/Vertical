@@ -7,6 +7,12 @@ class Park(models.Model):
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
     is_work = models.BooleanField(default=True, verbose_name="Работает")
     schedule = models.CharField(max_length=200, verbose_name="Расписание работы")
+    main_photo = models.ImageField(
+        verbose_name='Главное фото',
+        upload_to='parks/',
+        blank=True,
+        null=True
+    )
     def __str__(self):
         return f"{self.title} ({self.city})"
 

@@ -146,3 +146,6 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': False, # Пока отключаем отправку email
     'SERIALIZERS': {}, # Пока оставляем стандартные сериализаторы
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
