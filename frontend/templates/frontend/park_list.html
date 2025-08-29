@@ -1,28 +1,30 @@
- <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Веревочные парки "Вертикаль"</title>
-   </head>
-   <body>
-       <h1>Наши парки</h1>
-       
-       {% if parks %}
-           <ul>
-               {% for park in parks %}
-                   <li>
-                       <h2>
-                            <a href="{% url 'frontend:park-detail' park.id %}">{{ park.title }}</a>
-                       </h2>
-                       <p><strong>Город:</strong> {{ park.city }}</p>
-                       <p><strong>Адрес:</strong> {{ park.address }}</p>
-                       <p><em>{{ park.description }}</em></p>
-                   </li>
-                   <hr>
-               {% endfor %}
-           </ul>
-       {% else %}
-           <p>К сожалению, сейчас нет информации о доступных парках.</p>
-       {% endif %}
+{% extends "frontend/base.html" %}
 
-   </body>
-   </html>
+{% block title %}Наши парки - Вертикаль{% endblock %}
+
+{% block content %}
+    <h1>Наши парки</h1>
+    
+    {% if parks %}
+        <div class="row">
+            {% for park in parks %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <!-- Проверяем, есть ли у парка фото -->
+                        {% if park.main_photo %}
+                            <img src="{{ park.main_photo }}" class="card-img-top" alt="{{ park.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'frontend:park-detail' park.id %}">{{ park.title }}</a>
+                            </h5>
+                            <p class="card-text">{{ park.city }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>К сожалению, сейчас нет информации о доступных парках.</p>
+    {% endif %}
+{% endblock %}

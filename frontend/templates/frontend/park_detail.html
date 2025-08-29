@@ -1,43 +1,59 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{ park.title }} - Парки</title>
-    </head>
-    <body>
+{% extends "frontend/base.html" %}
+{% block title %}{% if park %}{{ park.title }}{% else %}Парк не найден{% endif %}{% endblock %}
+{% block content %}
+    {% if park %}
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h1>{{ park.title }}</h1>
+                <p><strong>Город: </strong>{{park.city}}</p>
+                <p><strong>Адрес: </strong>{{park.address}}</p>
+                <p><strong>Расписание: </strong>{{park.schedule}}</p>
+                <hr>
+                <h3><strong>Описание:</strong></h3>
+                <p>{{park.description | linebreaks}}</p>
+            </div>
+            <div class="col-md-6">
+                <!-- Содержимое второй колонки -->
+                {% if park.main_photo %}
+                    <img src="{{ park.main_photo }}" class="img-fluid rounded">
+                {% endif %}
+            </div>
+        </div>
 
-        {% if park %}
-            <h1>{{ park.title }}</h1>
-            <p><strong>Город: </strong>{{park.city}}</p>
-            <p><strong>Адрес: </strong>{{park.address}}</p>
-            <p><strong>Расписание: </strong>{{park.schedule}}</p>
+        <hr class="my-4">
+        <h2>Развлечения в парке:</h2>
+        {% if entertainments %}
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        {% for ent in entertainments %}
+                            <li>
+                                <h4> {{ent.title}} </h4>
+                                <p>Цена: {{ent.price}} руб.</p>
+                                <p>Минимальный рост: {{ent.min_height}}</p>
+                                <p>{{ent.description}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="col-md-6">
+                    <!-- Содержимое второй колонки -->
+                        <p></p>
+                </div>
+                </div>
+            </div>
             
-            <hr>
-            
-            <h3><strong>Описание:</strong></h3>
-            <p>{{park.description}}</p>
-
-            <h2>Развлечения в парке:</h2>
-            {% if entertainments %}
-                <ul>
-                    {% for ent in entertainments %}
-                        <li>
-                            <h4> {{ent.title}} </h4>
-                            <p>Цена: {{ent.price}} руб.</p>
-                            <p>Минимальный рост: {{ent.min_height}}</p>
-                            <p>{{ent.description}}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                
-                <p>К сожалению, нет информации для развлечений</p>
-            {% endif %}
         {% else %}
-            <!-- А вот если ПАРК НЕ НАЙДЕН, то показываем эту ошибку -->
-            <h1>Парк не найден</h1>
-            <p>К сожалению, мы не смогли найти информацию о парке.</p>
+            
+            <p>К сожалению, нет информации для развлечений</p>
         {% endif %}
-        <br>
-            <a href="{% url 'frontend:park-list' %}">Назад к паркам</a>    
-    </body>
-</html>
+    {% else %}
+        <!-- А вот если ПАРК НЕ НАЙДЕН, то показываем эту ошибку -->
+        <h1>Парк не найден</h1>
+        <p>К сожалению, мы не смогли найти информацию о парке.</p>
+    {% endif %}
+    <div class="mt-4">
+        <a href="{% url 'frontend:park-list' %}" class="btn btn-secondary">Назад к паркам</a>
+    </div>
+    <br>
+{% endblock %}
