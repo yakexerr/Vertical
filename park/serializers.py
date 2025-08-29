@@ -21,7 +21,7 @@ class EntertainmentPhotoSerializer(serializers.ModelSerializer):
 
 
 class EntertainmentSerializer(serializers.ModelSerializer):
-    photos = EntertainmentPhotoSerializer(many=True, read_only=True)
+    photos = EntertainmentPhotoSerializer(source='entertainmentphoto_set', many=True, read_only=True)
     class Meta:
         model = Entertainment
         fields = ['id', 'title', 'description', 'min_height', 'price', 'park', 'photos']
