@@ -23,29 +23,49 @@
 
         <hr class="my-4">
         <h2>Развлечения в парке:</h2>
+
         {% if entertainments %}
-            <div class="row">
-                <div class="col-md-6">
-                    <ul>
-                        {% for ent in entertainments %}
-                            <li>
-                                <h4> {{ent.title}} </h4>
-                                <p>Цена: {{ent.price}} руб.</p>
-                                <p>Минимальный рост: {{ent.min_height}}</p>
-                                <p>{{ent.description}}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    <div class="col-md-6">
-                    <!-- Содержимое второй колонки -->
-                        <p></p>
-                </div>
-                </div>
+            <div class="accordion" id="accordionEntertainments">
+                {% for ent in entertainments %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ ent.id }}" aria-expanded="false" aria-controls="collapse{{ ent.id }}">
+                                <strong>{{ ent.title }}</strong>&nbsp;- {{ ent.price }} руб.
+                            </button>
+                        </h2>
+                        <div id="collapse{{ ent.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionEntertainments">
+                            <div class="accordion-body">
+                                <p><strong>Минимальный рост:</strong> {{ ent.min_height }}</p>
+                                <p>{{ ent.description }}</p>
+
+                                <!-- А вот и наша карусель с фото! -->
+                                {% if ent.photos %}
+                                <div id="carousel{{ ent.id }}" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        {% for photo in ent.photos %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <img src="{{ photo.photo }}" class="d-block w-100 rounded" alt="{{ ent.title }}">
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- Вот они, кнопки "вперед/назад" -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ ent.id }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ ent.id }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            
         {% else %}
-            
-            <p>К сожалению, нет информации для развлечений</p>
+            <p>К сожалению, для этого парка пока нет информации о развлечениях.</p>
         {% endif %}
     {% else %}
         <!-- А вот если ПАРК НЕ НАЙДЕН, то показываем эту ошибку -->

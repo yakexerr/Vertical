@@ -24,3 +24,12 @@ class Entertainment(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Цена")
     def __str__(self):
         return f"{self.title} ({self.park.title}, {self.description})"
+    
+class EntertainmentPhoto(models.Model):
+    entertainment = models.ForeignKey(Entertainment, on_delete=models.CASCADE, verbose_name="Развлечение")
+    photo = models.ImageField(
+        verbose_name="Фотографии развлечений",
+        upload_to="entertainments/",
+        blank=True,
+        null=True
+    )
